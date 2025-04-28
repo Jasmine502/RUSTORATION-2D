@@ -22,17 +22,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.133333, 0.392157, 0.160784, 1)
 
-[node name="Vignette" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.627451)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_x2yvf")
-stretch_mode = 3
-
 [node name="TitleImage" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -80,6 +69,18 @@ grow_vertical = 0
 texture_normal = ExtResource("3_x2yvf")
 texture_pressed = ExtResource("3_x2yvf")
 texture_hover = ExtResource("3_x2yvf")
+stretch_mode = 3
+
+[node name="Vignette" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_x2yvf")
 stretch_mode = 3
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]

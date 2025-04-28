@@ -1,7 +1,11 @@
 # res://scripts/objects/zomborg.gd
 extends CharacterBody2D
 
+# --- NEW SIGNAL ---
+signal died # Emitted when health reaches zero, before queue_free
+
 # --- EXPORTS ---
+# ... (Keep existing exports) ...
 @export var move_speed: float = 150.0
 @export var health: int = 3
 @export var min_sound_interval: float = 2.0
@@ -13,6 +17,7 @@ extends CharacterBody2D
 @export var drop_chance: float = 0.75
 
 # --- NODES ---
+# ... (Keep existing node refs) ...
 @onready var sprite = $ZomborgSprite
 @onready var hitbox_area = $HitboxArea
 @onready var sound_timer = $SoundTimer
@@ -20,10 +25,12 @@ extends CharacterBody2D
 @onready var splat_sound_player = $SplatSoundPlayer
 
 # --- INTERNAL ---
+# ... (Keep existing internal vars) ...
 var player = null
 var possible_drops = ["foot", "claw", "core"]
 
 func _ready():
+	# ... (Keep existing _ready code) ...
 	player = get_tree().get_first_node_in_group("player")
 	if player == null: printerr("Zomborg couldn't find 'player' group!")
 
@@ -48,6 +55,7 @@ func _ready():
 
 
 func _physics_process(_delta):
+	# ... (Keep existing physics process) ...
 	if player == null or is_queued_for_deletion(): return
 
 	var direction_to_player = (player.global_position - global_position).normalized()
@@ -64,11 +72,13 @@ func _physics_process(_delta):
 				break
 
 func _on_hitbox_area_entered(area):
+	# ... (Keep existing area entered) ...
 	if area.is_in_group("bullets"):
 		take_damage(1)
 		area.queue_free()
 
 func take_damage(amount: int):
+	# ... (Keep existing take damage, but check health <= 0 *before* calling die) ...
 	if health <= 0: return
 	health -= amount
 
@@ -80,66 +90,57 @@ func take_damage(amount: int):
 		sprite.modulate = Color(1, 0.5, 0.5)
 		get_tree().create_timer(0.1).timeout.connect(_reset_color)
 
-	if health <= 0: die()
+	if health <= 0:
+		die() # Call die only when health actually drops to 0 or below
 
 func _reset_color():
+	# ... (Keep existing reset color) ...
 	if is_instance_valid(self) and sprite != null:
 		sprite.modulate = Color(1, 1, 1)
 
 func die():
-	if is_queued_for_deletion(): return
+	# --- Emit Signal BEFORE queue_free ---
+	emit_signal("died")
+	
+	# --- Original die logic ---
+	if is_queued_for_deletion(): return # Still good to prevent multiple actions
 	if sound_timer: sound_timer.stop()
 	if sound_player: sound_player.stop()
 	_try_drop_salvage()
 	call_deferred("queue_free")
 
 
-# --- Corrected Function ---
 func _try_drop_salvage():
-	# Exit if scene not set or if random chance fails
-	if salvage_scene == null or randf() >= drop_chance:
-		return
+	# ... (Keep existing salvage drop) ...
+	if salvage_scene == null or randf() >= drop_chance: return
+	if possible_drops.is_empty(): printerr("Zomborg Error: possible_drops empty!"); return
 
-	# --- Determine Drop Type ---
-	if possible_drops.is_empty():
-		printerr("Zomborg Error: possible_drops array is empty!")
-		return
-	var chosen_drop_type = possible_drops.pick_random() # Pick one randomly
-
-	# --- Instantiate Salvage ---
+	var chosen_drop_type = possible_drops.pick_random()
 	var salvage_instance = salvage_scene.instantiate()
 
-	# --- Type Check ---
-	# Check if it's the expected type (or inherits from it)
 	if not salvage_instance is Area2D:
-		printerr("Salvage Drop Error: Instantiated scene is not an Area2D or derived type!")
-		salvage_instance.queue_free() # Clean up wrong instance
+		printerr("Salvage Drop Error: Instantiated scene not Area2D!")
+		salvage_instance.queue_free()
 		return
 
-	# --- Set Type BEFORE Adding to Tree ---
-	# Directly access the variable, assuming the script is correct.
-	# Removed the incorrect 'has()' check.
 	salvage_instance.salvage_type = chosen_drop_type
-	print("Zomborg: Set salvage_instance.salvage_type to: ", chosen_drop_type) # DEBUG
-
-	# --- Set Position ---
 	salvage_instance.global_position = global_position
 
-	# --- Add to Scene Tree (Deferred) ---
 	var salvage_container = get_tree().get_first_node_in_group("salvage_container")
 	if salvage_container:
 		salvage_container.call_deferred("add_child", salvage_instance)
 	else:
 		printerr("Salvage Drop WARN: 'salvage_container' group node not found.")
-		# Adding to get_parent() might be unreliable if zomborg is also deferred removed
 
 
 func _randomize_sound_timer():
+	# ... (Keep existing randomize timer) ...
 	if sound_timer:
 		sound_timer.wait_time = randf_range(min_sound_interval, max_sound_interval)
 		sound_timer.start()
 
 func _on_sound_timer_timeout():
+	# ... (Keep existing sound timeout) ...
 	if sound_player and zmb_sounds != null and not zmb_sounds.is_empty() and not sound_player.playing:
 		var random_sound = zmb_sounds.pick_random()
 		if random_sound is AudioStream:

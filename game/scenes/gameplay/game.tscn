@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://5py5jdm8rnh0"]
+[gd_scene load_steps=8 format=3 uid="uid://5py5jdm8rnh0"]
 
 [ext_resource type="PackedScene" uid="uid://cew0olon5i0nr" path="res://scenes/objects/player.tscn" id="1_d5x8l"]
 [ext_resource type="Script" uid="uid://cpi17rk1h6err" path="res://scripts/gameplay/game.gd" id="1_xgptt"]
 [ext_resource type="PackedScene" uid="uid://di2fr7at12w7u" path="res://scenes/objects/zomborg.tscn" id="2_nwxa7"]
 [ext_resource type="AudioStream" uid="uid://ch5pgri587xvl" path="res://assets/sounds/GAME OVER.ogg" id="3_nvygq"]
+[ext_resource type="PackedScene" uid="uid://eym67yphv6n5" path="res://scenes/ui/upgrade_screen.tscn" id="4_vxo0c"]
 [ext_resource type="PackedScene" uid="uid://bmk5snmychqtw" path="res://scenes/ui/hud.tscn" id="5_nvygq"]
 [ext_resource type="Texture2D" uid="uid://bjq0ely2i86hl" path="res://assets/images/vignette.png" id="6_mwwos"]
 
@@ -11,6 +12,7 @@
 script = ExtResource("1_xgptt")
 zomborg_scene = ExtResource("2_nwxa7")
 game_over_sound = ExtResource("3_nvygq")
+upgrade_screen_scene = ExtResource("4_vxo0c")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -21,18 +23,6 @@ offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.133333, 0.392157, 0.160784, 1)
-
-[node name="Vignette" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.482353)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_mwwos")
-stretch_mode = 3
 
 [node name="Player" parent="." instance=ExtResource("1_d5x8l")]
 position = Vector2(59, 62)
@@ -50,3 +40,16 @@ volume_db = -1.0
 
 [node name="SalvageItems" type="Node2D" parent="."]
 z_index = 10
+
+[node name="Vignette" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.482353)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_mwwos")
+stretch_mode = 3
