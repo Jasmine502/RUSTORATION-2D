@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bohl3t2cogpdf"
-path="res://.godot/imported/play.png-103002be68228936cbc0bcee22a95529.ctex"
+uid="uid://bt68wy4qs1ly3"
+path="res://.godot/imported/HOW TO PLAY hover.png-434c659db90fcd40db5dd30098dd031a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/play.png"
-dest_files=["res://.godot/imported/play.png-103002be68228936cbc0bcee22a95529.ctex"]
+source_file="res://assets/images/HOW TO PLAY hover.png"
+dest_files=["res://.godot/imported/HOW TO PLAY hover.png-434c659db90fcd40db5dd30098dd031a.ctex"]
 
 [params]
 

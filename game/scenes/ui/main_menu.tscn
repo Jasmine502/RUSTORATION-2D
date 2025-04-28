@@ -1,16 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://2x7m7l0670r4"]
+[gd_scene load_steps=10 format=3 uid="uid://2x7m7l0670r4"]
 
-[ext_resource type="Texture2D" uid="uid://j4quab838lbi" path="res://assets/images/RUSTORATION title.png" id="1_1g8jr"]
 [ext_resource type="Script" uid="uid://ecmkbettappy" path="res://scripts/ui/main_menu.gd" id="1_m1kxf"]
-[ext_resource type="Texture2D" uid="uid://bohl3t2cogpdf" path="res://assets/images/play.png" id="2_m1kxf"]
-[ext_resource type="Texture2D" uid="uid://c5itq6tma1p3t" path="res://assets/images/how to play.png" id="3_x2yvf"]
+[ext_resource type="Texture2D" uid="uid://cu2u3u46k6j2v" path="res://assets/images/RUSTORATION TITLE.png" id="2_btxxm"]
+[ext_resource type="Texture2D" uid="uid://rllm2wnrw8qy" path="res://assets/images/PLAY BUTTON.png" id="3_wb0q5"]
+[ext_resource type="Texture2D" uid="uid://cbimwgjlwkfa2" path="res://assets/images/PLAY pressed.png" id="4_q85j6"]
+[ext_resource type="Texture2D" uid="uid://d1yhsqvc3l1l0" path="res://assets/images/PLAY HOVER.png" id="5_8g5eo"]
 [ext_resource type="Texture2D" uid="uid://bjq0ely2i86hl" path="res://assets/images/vignette.png" id="5_x2yvf"]
+[ext_resource type="Texture2D" uid="uid://clunqdeeec380" path="res://assets/images/HOW TO PLAY.png" id="6_q85j6"]
+[ext_resource type="Texture2D" uid="uid://bocvn6prlhe2g" path="res://assets/images/HOW TO PLAY pressed.png" id="7_8g5eo"]
+[ext_resource type="Texture2D" uid="uid://bt68wy4qs1ly3" path="res://assets/images/HOW TO PLAY hover.png" id="8_7suek"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_m1kxf")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -20,19 +26,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.133333, 0.392157, 0.160784, 1)
+color = Color(0.102867, 0.0948735, 0.0863113, 1)
 
 [node name="TitleImage" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -451.0
-offset_top = 72.0
-offset_right = 451.0
-offset_bottom = 192.0
+offset_left = -1780.0
+offset_right = 1781.0
+offset_bottom = 342.0
 grow_horizontal = 2
-texture = ExtResource("1_1g8jr")
+texture = ExtResource("2_btxxm")
 stretch_mode = 3
 
 [node name="PlayButton" type="TextureButton" parent="."]
@@ -48,9 +53,9 @@ offset_right = 252.0
 offset_bottom = 98.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_normal = ExtResource("2_m1kxf")
-texture_pressed = ExtResource("2_m1kxf")
-texture_hover = ExtResource("2_m1kxf")
+texture_normal = ExtResource("3_wb0q5")
+texture_pressed = ExtResource("4_q85j6")
+texture_hover = ExtResource("5_8g5eo")
 stretch_mode = 3
 
 [node name="HowToPlayButton" type="TextureButton" parent="."]
@@ -60,15 +65,15 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -349.0
-offset_top = -186.0
-offset_right = 349.0
-offset_bottom = -72.0
+offset_left = -454.5
+offset_top = -253.0
+offset_right = 454.5
+offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 0
-texture_normal = ExtResource("3_x2yvf")
-texture_pressed = ExtResource("3_x2yvf")
-texture_hover = ExtResource("3_x2yvf")
+texture_normal = ExtResource("6_q85j6")
+texture_pressed = ExtResource("7_8g5eo")
+texture_hover = ExtResource("8_7suek")
 stretch_mode = 3
 
 [node name="Vignette" type="TextureRect" parent="."]
