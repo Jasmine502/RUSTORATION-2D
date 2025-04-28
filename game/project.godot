@@ -28,6 +28,10 @@ bullets=""
 game_manager=""
 salvage_container=""
 
+[gui]
+
+theme/custom_font="uid://wxnvrijlvkui"
+
 [input]
 
 move_left={
