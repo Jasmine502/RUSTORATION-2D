@@ -1,7 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://eym67yphv6n5"]
+[gd_scene load_steps=14 format=3 uid="uid://eym67yphv6n5"]
 
 [ext_resource type="Script" uid="uid://b54k1j87ovjc0" path="res://scripts/ui/upgrade_screen.gd" id="1_xpnye"]
 [ext_resource type="Texture2D" uid="uid://j0dvpav61r68" path="res://assets/images/Salvage.png" id="2_eg2gl"]
+[ext_resource type="Texture2D" uid="uid://dmnk07d52gepm" path="res://assets/images/rustcoin.png" id="3_to70l"]
+[ext_resource type="Texture2D" uid="uid://bcmbvxht7a7an" path="res://assets/images/foot.png" id="4_5glte"]
+[ext_resource type="Texture2D" uid="uid://bxsg5twm8rcft" path="res://assets/images/claw.png" id="5_giv8v"]
+[ext_resource type="Texture2D" uid="uid://cpvdalg6jokek" path="res://assets/images/core.png" id="6_se0nm"]
+[ext_resource type="Texture2D" uid="uid://cspcp8e1goguq" path="res://assets/images/Toggle Icon Sell.png" id="7_5glte"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5glte"]
+bg_color = Color(0.247059, 0, 0.00392157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_giv8v"]
+bg_color = Color(0.788235, 0.0745098, 0.0901961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se0nm"]
+bg_color = Color(0, 0.0823529, 0.545098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4jv7"]
+bg_color = Color(0.188235, 0.823529, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnp6h"]
+bg_color = Color(0.0156863, 0.156863, 0.00392157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygxdb"]
+bg_color = Color(0.0156863, 0.156863, 0.00392157, 1)
 
 [node name="UpgradeScreen" type="CanvasLayer"]
 script = ExtResource("1_xpnye")
@@ -13,62 +36,379 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.0392157, 0.164706, 0.0509804, 0.588235)
+color = Color(0, 0, 0, 0.14902)
 
-[node name="UpgradePanel" type="PanelContainer" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -952.0
-offset_top = -530.0
-offset_right = 968.0
-offset_bottom = 550.0
+[node name="MainMargins" type="MarginContainer" parent="."]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="MainLayout" type="VBoxContainer" parent="UpgradePanel"]
+[node name="MainVerticalLayout" type="VBoxContainer" parent="MainMargins"]
+layout_mode = 2
+
+[node name="TopBar" type="HBoxContainer" parent="MainMargins/MainVerticalLayout"]
 layout_mode = 2
 alignment = 1
 
-[node name="SalvageIcon" type="TextureRect" parent="UpgradePanel/MainLayout"]
-custom_minimum_size = Vector2(0, 150)
+[node name="RustCoinIcon" type="TextureRect" parent="MainMargins/MainVerticalLayout/TopBar"]
 layout_mode = 2
-texture = ExtResource("2_eg2gl")
+texture = ExtResource("3_to70l")
 stretch_mode = 5
 
-[node name="TotalSalvageLabel" type="Label" parent="UpgradePanel/MainLayout"]
+[node name="RustCoinLabel" type="Label" parent="MainMargins/MainVerticalLayout/TopBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 90
+text = "9999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="Control" parent="MainMargins/MainVerticalLayout/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SalvageCounts" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="FootIcon" type="TextureRect" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("4_5glte")
+stretch_mode = 5
+
+[node name="FootCountLabel" type="Label" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "x0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonLayout" type="HBoxContainer" parent="UpgradePanel/MainLayout"]
-layout_mode = 2
-theme_override_constants/separation = 40
-alignment = 1
+[node name="ScrapFootButton" type="TextureButton" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts/FootCountLabel"]
+layout_mode = 0
+offset_right = 67.0
+offset_bottom = 26.0
+texture_pressed = ExtResource("2_eg2gl")
+texture_hover = ExtResource("2_eg2gl")
 
-[node name="SpeedButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
+[node name="ClawIcon" type="TextureRect" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Increases movement speed."
-theme_override_font_sizes/font_size = 30
-text = "Upgrade Speed"
+texture = ExtResource("5_giv8v")
+stretch_mode = 5
 
-[node name="DamageButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
-layout_mode = 2
-tooltip_text = "Increases bullet damage"
-theme_override_font_sizes/font_size = 30
-text = "Upgrade Damage"
-
-[node name="HealthButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
-layout_mode = 2
-tooltip_text = "Increases maximum health."
-theme_override_font_sizes/font_size = 30
-text = "Upgrade Core"
-
-[node name="NextWaveButton" type="Button" parent="UpgradePanel/MainLayout"]
+[node name="ClawCountLabel" type="Label" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
+text = "x0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrapClawButton" type="TextureButton" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts/ClawCountLabel"]
+layout_mode = 0
+offset_right = 67.0
+offset_bottom = 26.0
+texture_pressed = ExtResource("2_eg2gl")
+texture_hover = ExtResource("2_eg2gl")
+
+[node name="CoreIcon" type="TextureRect" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("6_se0nm")
+stretch_mode = 5
+
+[node name="CoreCountLabel" type="Label" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "x0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrapCoreButton" type="TextureButton" parent="MainMargins/MainVerticalLayout/TopBar/SalvageCounts/CoreCountLabel"]
+layout_mode = 0
+offset_right = 67.0
+offset_bottom = 26.0
+texture_pressed = ExtResource("2_eg2gl")
+texture_hover = ExtResource("2_eg2gl")
+
+[node name="MainSplit" type="HSplitContainer" parent="MainMargins/MainVerticalLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftPanel" type="PanelContainer" parent="MainMargins/MainVerticalLayout/MainSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftLayout" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel"]
+layout_mode = 2
+
+[node name="ToggleBox" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout"]
+layout_mode = 2
+alignment = 1
+
+[node name="BuyLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ToggleBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "BUY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ToggleIcon" type="TextureRect" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ToggleBox"]
+layout_mode = 2
+texture = ExtResource("7_5glte")
+stretch_mode = 5
+
+[node name="SellLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ToggleBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "SELL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemListScroll" type="ScrollContainer" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll/ItemList"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Pistol"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll/ItemList"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Shotgun"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll/ItemList"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Combat Knife"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll/ItemList"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Flamethrower"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/LeftPanel/LeftLayout/ItemListScroll/ItemList"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "SMG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightPanel" type="PanelContainer" parent="MainMargins/MainVerticalLayout/MainSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightLayout" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel"]
+layout_mode = 2
+
+[node name="StatsBox" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "CORE"
+
+[node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealthTierLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "TIER 0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="HealthProgressBar" type="ProgressBar" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+theme_override_styles/background = SubResource("StyleBoxFlat_5glte")
+theme_override_styles/fill = SubResource("StyleBoxFlat_giv8v")
+show_percentage = false
+
+[node name="HealthProgressLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "0/5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="UpgradeHealthButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "UPGRADE"
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "DAMAGE"
+
+[node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DamageTierLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "TIER 0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="DamageProgressBar" type="ProgressBar" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer3"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+theme_override_styles/background = SubResource("StyleBoxFlat_se0nm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_g4jv7")
+show_percentage = false
+
+[node name="DamageProgressLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "0/5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="UpgradeDamageButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "UPGRADE"
+
+[node name="HBoxContainer5" type="VBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "SERVOS"
+
+[node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedTierLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "TIER 0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="SpeedProgressBar" type="ProgressBar" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+theme_override_styles/background = SubResource("StyleBoxFlat_cnp6h")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ygxdb")
+show_percentage = false
+
+[node name="SpeedProgressLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "0/5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="UpgradeSpeedButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "UPGRADE"
+
+[node name="NextWaveButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 50
 text = "Start Next Wave"
+icon_alignment = 1
+
+[node name="ActionButtons" type="HBoxContainer" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="BuyButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/ActionButtons"]
+layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(1, 0.947057, 0.644984, 1)
+theme_override_colors/font_color = Color(1, 0.882353, 0, 1)
+theme_override_colors/font_focus_color = Color(1, 0.945098, 0.643137, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.882353, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "BUY"
+
+[node name="InstallButton" type="Button" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/ActionButtons"]
+layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(0.779488, 1, 0.762802, 1)
+theme_override_colors/font_color = Color(0.403922, 1, 0.392157, 1)
+theme_override_colors/font_focus_color = Color(0.780392, 1, 0.764706, 1)
+theme_override_colors/font_pressed_color = Color(0.403922, 1, 0.392157, 1)
+theme_override_font_sizes/font_size = 80
+text = "INSTALL"
