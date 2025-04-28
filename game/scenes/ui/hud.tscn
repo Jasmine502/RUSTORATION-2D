@@ -1,26 +1,31 @@
-[gd_scene load_steps=13 format=3 uid="uid://bmk5snmychqtw"]
+[gd_scene load_steps=5 format=3 uid="uid://bmk5snmychqtw"]
 
-[ext_resource type="Texture2D" uid="uid://ccdkr82wyxn28" path="res://assets/images/HP100.png" id="1_0mwgc"]
 [ext_resource type="Script" uid="uid://cg67mb548sub4" path="res://scripts/ui/hud.gd" id="1_hqnrr"]
-[ext_resource type="Texture2D" uid="uid://jmxrg3sti6ps" path="res://assets/images/HP0.png" id="2_0h1do"]
-[ext_resource type="Texture2D" uid="uid://cl03pxiirb57k" path="res://assets/images/HP10.png" id="3_4d46k"]
-[ext_resource type="Texture2D" uid="uid://ctiytigw6rw8n" path="res://assets/images/HP20.png" id="4_erw67"]
-[ext_resource type="Texture2D" uid="uid://kkqwiyrkfirq" path="res://assets/images/HP30.png" id="5_gonto"]
-[ext_resource type="Texture2D" uid="uid://voy3l0pem6u6" path="res://assets/images/HP40.png" id="6_cwdlq"]
-[ext_resource type="Texture2D" uid="uid://pbs73d2m5gbr" path="res://assets/images/HP50.png" id="7_o6xly"]
-[ext_resource type="Texture2D" uid="uid://bvqm7h155dp0u" path="res://assets/images/HP60.png" id="8_we3sy"]
-[ext_resource type="Texture2D" uid="uid://bfxt75ojn2r5g" path="res://assets/images/HP70.png" id="9_65nxt"]
-[ext_resource type="Texture2D" uid="uid://dchmqnm0a2647" path="res://assets/images/HP80.png" id="10_el1dq"]
-[ext_resource type="Texture2D" uid="uid://cxwb0ngtvinfw" path="res://assets/images/HP90.png" id="11_gmc6u"]
+[ext_resource type="Texture2D" uid="uid://bjq0ely2i86hl" path="res://assets/images/vignette.png" id="2_hqnrr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0h1do"]
+bg_color = Color(0.247059, 0, 0.00392157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4d46k"]
+bg_color = Color(0.788235, 0.0745098, 0.0901961, 1)
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hqnrr")
-health_textures = Array[Texture2D]([ExtResource("2_0h1do"), ExtResource("3_4d46k"), ExtResource("4_erw67"), ExtResource("5_gonto"), ExtResource("6_cwdlq"), ExtResource("7_o6xly"), ExtResource("8_we3sy"), ExtResource("9_65nxt"), ExtResource("10_el1dq"), ExtResource("11_gmc6u"), ExtResource("1_0mwgc")])
 
-[node name="HealthBarDisplay" type="TextureRect" parent="."]
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 310.0
-offset_bottom = 50.0
-texture = ExtResource("1_0mwgc")
-stretch_mode = 2
+[node name="VignetteDisplay" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.643137)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_hqnrr")
+
+[node name="HealthProgressBar" type="ProgressBar" parent="."]
+offset_left = 25.0
+offset_top = 11.0
+offset_right = 332.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0h1do")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4d46k")
