@@ -1,0 +1,53 @@
+[gd_scene load_steps=13 format=3 uid="uid://di2fr7at12w7u"]
+
+[ext_resource type="Texture2D" uid="uid://bnmj2nh4758gi" path="res://assets/images/Zomborg.png" id="1_2pceo"]
+[ext_resource type="Script" uid="uid://bfq5t06bx7to6" path="res://scripts/objects/zomborg.gd" id="1_d3hs5"]
+[ext_resource type="AudioStream" uid="uid://dit43tsbmbmnc" path="res://assets/sounds/zmb_1.ogg" id="2_ibatu"]
+[ext_resource type="AudioStream" uid="uid://b2lyyia2b8syq" path="res://assets/sounds/zmb_2.ogg" id="3_ddyw6"]
+[ext_resource type="AudioStream" uid="uid://d3btfpdxfwcv5" path="res://assets/sounds/zmb_3.ogg" id="4_7048v"]
+[ext_resource type="AudioStream" uid="uid://cvbgu707m8mn8" path="res://assets/sounds/zmb_4.ogg" id="5_7c6uu"]
+[ext_resource type="AudioStream" uid="uid://b3mvxdlq2a17a" path="res://assets/sounds/zmb_5.ogg" id="6_y856k"]
+[ext_resource type="AudioStream" uid="uid://c5qk1da4ud3tf" path="res://assets/sounds/zmb_6.ogg" id="7_pejqm"]
+[ext_resource type="AudioStream" uid="uid://fk2j6cga0no3" path="res://assets/sounds/splat.ogg" id="8_ddyw6"]
+[ext_resource type="PackedScene" uid="uid://7jw7rmuknies" path="res://scenes/objects/salvage.tscn" id="9_7048v"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d3hs5"]
+radius = 61.0
+height = 122.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_26bkf"]
+radius = 61.0
+height = 122.0
+
+[node name="Zomborg" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_d3hs5")
+zmb_sounds = Array[AudioStream]([ExtResource("2_ibatu"), ExtResource("3_ddyw6"), ExtResource("4_7048v"), ExtResource("5_7c6uu"), ExtResource("6_y856k"), ExtResource("7_pejqm")])
+splat_sound = ExtResource("8_ddyw6")
+salvage_scene = ExtResource("9_7048v")
+
+[node name="ZomborgSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_2pceo")
+
+[node name="PhysicsShape" type="CollisionShape2D" parent="."]
+position = Vector2(-5, 0)
+shape = SubResource("CapsuleShape2D_d3hs5")
+
+[node name="HitboxArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 16
+
+[node name="HitboxShape" type="CollisionShape2D" parent="HitboxArea"]
+position = Vector2(-2, 0)
+shape = SubResource("CapsuleShape2D_26bkf")
+
+[node name="SoundTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="SoundPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = 0.5
+
+[node name="SplatSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = 0.5

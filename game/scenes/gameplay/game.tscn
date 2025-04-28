@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://5py5jdm8rnh0"]
+
+[ext_resource type="PackedScene" uid="uid://cew0olon5i0nr" path="res://scenes/objects/player.tscn" id="1_d5x8l"]
+[ext_resource type="Script" uid="uid://cpi17rk1h6err" path="res://scripts/gameplay/game.gd" id="1_xgptt"]
+[ext_resource type="PackedScene" uid="uid://di2fr7at12w7u" path="res://scenes/objects/zomborg.tscn" id="2_nwxa7"]
+[ext_resource type="AudioStream" uid="uid://ch5pgri587xvl" path="res://assets/sounds/GAME OVER.ogg" id="3_nvygq"]
+[ext_resource type="PackedScene" uid="uid://bmk5snmychqtw" path="res://scenes/ui/hud.tscn" id="5_nvygq"]
+
+[node name="Game" type="Node2D" groups=["game_manager", "salvage_container"]]
+script = ExtResource("1_xgptt")
+zomborg_scene = ExtResource("2_nwxa7")
+game_over_sound = ExtResource("3_nvygq")
+
+[node name="Player" parent="." instance=ExtResource("1_d5x8l")]
+position = Vector2(59, 62)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="GameOverSoundPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -1.0
+
+[node name="HUD" parent="." instance=ExtResource("5_nvygq")]
+
+[node name="SalvageItems" type="Node2D" parent="."]
+z_index = 10

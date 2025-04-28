@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://cew0olon5i0nr"]
+
+[ext_resource type="Script" uid="uid://ok1ousjkxlu2" path="res://scripts/objects/player.gd" id="1_2147m"]
+[ext_resource type="AudioStream" uid="uid://81vamd5eis8l" path="res://assets/sounds/hurt sound.ogg" id="2_54rde"]
+[ext_resource type="Texture2D" uid="uid://bqw77gs21c1d8" path="res://assets/images/PC.png" id="2_h5uus"]
+[ext_resource type="PackedScene" uid="uid://dmtd0nfvi4nar" path="res://scenes/objects/bullet.tscn" id="2_q8hb4"]
+[ext_resource type="AudioStream" uid="uid://2okwr50iye2u" path="res://assets/sounds/shot.ogg" id="3_q8hb4"]
+[ext_resource type="Texture2D" uid="uid://vu1aer46hqm" path="res://assets/images/PC shooting.png" id="6_2rlf8"]
+[ext_resource type="Texture2D" uid="uid://b2kb55j05nwra" path="res://assets/images/PC hurt.png" id="7_0ay4w"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hrnqq"]
+radius = 54.0
+height = 108.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2rlf8"]
+radius = 63.3482
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 32
+script = ExtResource("1_2147m")
+bullet_scene = ExtResource("2_q8hb4")
+hurt_sound = ExtResource("2_54rde")
+shoot_sound = ExtResource("3_q8hb4")
+normal_texture = ExtResource("2_h5uus")
+shooting_texture = ExtResource("6_2rlf8")
+hurt_texture = ExtResource("7_0ay4w")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_h5uus")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_hrnqq")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(56, 0)
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="DamageCooldownTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="HurtSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = 0.5
+
+[node name="ShootSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+volume_db = 0.5
+
+[node name="ShootSpriteTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="PickupArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 32
+
+[node name="PickupRangeShape" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_2rlf8")
