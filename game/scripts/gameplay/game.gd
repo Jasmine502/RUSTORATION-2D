@@ -12,7 +12,7 @@ signal wave_updated(new_wave)
 @export var salvage_to_rustcoin_rate: int = 2
 
 @onready var enemies_container = $Enemies
-@onready var player = $Player
+@onready var player = $Player # Needs Player.gd attached
 @onready var game_over_sound_player = $GameOverSoundPlayer
 @onready var salvage_container = $SalvageItems
 var upgrade_screen_instance = null
@@ -28,7 +28,6 @@ var enemies_remaining_this_wave: int = 0
 var wave_in_progress: bool = false
 var base_enemies_per_wave: int = 8
 var extra_enemies_per_wave: int = 3
-var upgrade_cost: int = 5
 
 var map_bounds_min_x: float = -1150.0; var map_bounds_max_x: float = 1150.0
 var map_bounds_min_y: float = -750.0; var map_bounds_max_y: float = 750.0
@@ -53,6 +52,7 @@ func _ready():
 	add_to_group("game_manager"); add_to_group("salvage_container")
 	foot_salvage = 0; claw_salvage = 0; core_salvage = 0; rust_coin = 0; _update_total_salvage()
 	emit_signal("salvage_updated", foot_salvage, claw_salvage, core_salvage); emit_signal("rust_coin_updated", rust_coin)
+	# Null checks...
 	if salvage_container == null: printerr("Game Error: SalvageItems node not found!")
 	if enemies_container == null: printerr("ERROR: Enemies container node not found!")
 	if game_over_sound_player == null: printerr("WARN: GameOverSoundPlayer node missing!")
@@ -86,7 +86,10 @@ func spawn_enemy(focus_type: String):
 	var zomborg_instance = zomborg_scene.instantiate()
 	if zomborg_instance.has_method("initialize"): zomborg_instance.initialize(base_stats.health, base_stats.speed, base_stats.damage, focus_type)
 	else: printerr("Zomborg instance missing initialize()!"); zomborg_instance.queue_free(); return
-	if zomborg_instance.has_signal("died"): zomborg_instance.died.connect(_on_enemy_died, CONNECT_ONE_SHOT)
+	if zomborg_instance.has_signal("died"):
+		if not zomborg_instance.died.is_connected(_on_enemy_died):
+			var err = zomborg_instance.died.connect(_on_enemy_died.bind(zomborg_instance), CONNECT_ONE_SHOT | CONNECT_REFERENCE_COUNTED)
+			if err != OK: printerr("ERROR connecting died signal for Zomborg %s: %d" % [zomborg_instance.get_instance_id(), err])
 	else: printerr("Zomborg scene missing 'died' signal!")
 	zomborg_instance.global_position = spawn_position; enemies_container.add_child(zomborg_instance)
 
@@ -100,34 +103,44 @@ func start_next_wave():
 	else:
 		total_enemies = base_enemies_per_wave + (current_wave - (wave_definitions.size() + 1)) * extra_enemies_per_wave; total_enemies = max(total_enemies, 1); var remaining_enemies = total_enemies
 		speed_enemies = randi_range(0, remaining_enemies); remaining_enemies -= speed_enemies; damage_enemies = randi_range(0, remaining_enemies); remaining_enemies -= damage_enemies; health_enemies = remaining_enemies
+	print("DEBUG: Clearing previous enemies (Count: %d)" % enemies_container.get_child_count())
+	for child in enemies_container.get_children():
+		#print("DEBUG: Removing enemy: ", child.get_instance_id())
+		if child.has_signal("died") and child.died.is_connected(_on_enemy_died): child.died.disconnect(_on_enemy_died)
+		child.queue_free()
 	enemies_remaining_this_wave = total_enemies; print("Setting enemies_remaining_this_wave to: ", enemies_remaining_this_wave)
 	if total_enemies == 0: print("WARN: Wave %d has 0 enemies." % current_wave); call_deferred("wave_cleared"); return
+	print("DEBUG: Spawning %d enemies for Wave %d..." % [total_enemies, current_wave])
 	for _s in range(speed_enemies): spawn_enemy("speed")
 	for _d in range(damage_enemies): spawn_enemy("damage")
 	for _h in range(health_enemies): spawn_enemy("health")
 	wave_in_progress = true
 	if is_instance_valid(upgrade_screen_instance): upgrade_screen_instance.hide()
-	if get_tree().paused: get_tree().paused = false
+	if get_tree().paused: print("Game: Unpausing for next wave."); get_tree().paused = false
 
 
-func _on_enemy_died():
+func _on_enemy_died(enemy_instance):
 	if not wave_in_progress or game_over_flag: return
+	if not is_instance_valid(enemy_instance) or not enemy_instance.is_inside_tree() or enemy_instance.get_parent() != enemies_container: printerr("WARN: Received died signal from invalid instance: %s" % enemy_instance); return
 	if enemies_remaining_this_wave > 0:
 		enemies_remaining_this_wave -= 1
-		print("DEBUG: Enemy died. Remaining: %d (Wave %d)" % [enemies_remaining_this_wave, current_wave])
+		# print("DEBUG: Enemy %s died. Remaining: %d (Wave %d)" % [enemy_instance.get_instance_id(), enemies_remaining_this_wave, current_wave])
 		if enemies_remaining_this_wave == 0:
-			print("DEBUG: Wave %d clear condition met." % current_wave)
+			print("DEBUG: Wave %d clear condition met. Actual children in container: %d" % [current_wave, enemies_container.get_child_count()])
 			call_deferred("wave_cleared")
-	else: printerr("WARN: _on_enemy_died called but enemies_remaining was <= 0!")
+	else: printerr("WARN: _on_enemy_died called for %s but enemies_remaining was <= 0!" % enemy_instance.get_instance_id())
 
 
 func wave_cleared():
 	print("--- Wave ", current_wave, " Cleared! ---"); wave_in_progress = false;
+	var children_left = enemies_container.get_child_count()
+	if children_left > 0: printerr("CRITICAL WARN: wave_cleared called but %d enemies still in container!" % children_left)
 	call_deferred("show_upgrade_screen")
 
 
 func show_upgrade_screen():
 	if upgrade_screen_scene == null: printerr("Upgrade Screen Scene not assigned!"); get_tree().create_timer(2.0).timeout.connect(start_next_wave); return
+	if player == null or not is_instance_valid(player) or not player.has_method("get_stats_for_ui"): printerr("ERROR: Player invalid or missing method in show_upgrade_screen!"); get_tree().create_timer(2.0).timeout.connect(start_next_wave); return
 	if not is_instance_valid(upgrade_screen_instance):
 		upgrade_screen_instance = upgrade_screen_scene.instantiate(); if not upgrade_screen_instance: printerr("Game Error: Failed to instantiate Upgrade Screen!"); get_tree().create_timer(2.0).timeout.connect(start_next_wave); return
 		add_child(upgrade_screen_instance); var expected_script_path = "res://scripts/ui/upgrade_screen.gd"
@@ -139,8 +152,8 @@ func show_upgrade_screen():
 				if not upgrade_screen_instance.scrap_requested.is_connected(scrap_salvage): err_code = upgrade_screen_instance.scrap_requested.connect(scrap_salvage); if err_code != OK: printerr("Failed connect scrap_req: ", err_code)
 			else: printerr("WARN: Upgrade screen instance missing 'scrap_requested' signal!")
 		else: printerr("Game Error: Upgrade screen instance missing correct script!"); upgrade_screen_instance.visible = false
-	var player_stats_placeholder = {}; if player and player.has_method("get_stats_for_ui"): player_stats_placeholder = player.get_stats_for_ui()
-	if is_instance_valid(upgrade_screen_instance) and upgrade_screen_instance.has_method("update_display"): upgrade_screen_instance.update_display(foot_salvage, claw_salvage, core_salvage, rust_coin, player_stats_placeholder)
+	var player_stats = player.get_stats_for_ui()
+	if is_instance_valid(upgrade_screen_instance) and upgrade_screen_instance.has_method("update_display"): upgrade_screen_instance.update_display(foot_salvage, claw_salvage, core_salvage, rust_coin, player_stats)
 	else: printerr("Upgrade screen instance invalid or missing 'update_display' method!"); if not is_instance_valid(upgrade_screen_instance): get_tree().create_timer(2.0).timeout.connect(start_next_wave); return
 	if is_instance_valid(upgrade_screen_instance) and upgrade_screen_instance.visible == false: upgrade_screen_instance.show()
 	if not get_tree().paused: get_tree().paused = true
@@ -149,16 +162,20 @@ func show_upgrade_screen():
 func _on_upgrade_requested(upgrade_type: String):
 	if player == null or not is_instance_valid(player) or not player.has_method("add_upgrade_point"): printerr("Upgrade Error: Player invalid/missing method!"); print("Upgrade failed (Player Error)."); return
 	var player_stats = player.get_stats_for_ui(); var cost_needed = player_stats.get(upgrade_type + "_needed", 999)
-	_update_total_salvage()
-	if total_salvage >= cost_needed:
-		total_salvage -= cost_needed # Needs refinement if individual counts used elsewhere
-		print("Upgrade applied! Spent %d Total Salvage for %s point." % [cost_needed, upgrade_type])
+	var current_total_salvage = foot_salvage + claw_salvage + core_salvage
+	if current_total_salvage >= cost_needed:
+		var cost_remaining = cost_needed; var spent_details = {"foot": 0, "claw": 0, "core": 0}
+		if foot_salvage > 0 and cost_remaining > 0: var spend_amount = min(foot_salvage, cost_remaining); foot_salvage -= spend_amount; cost_remaining -= spend_amount; spent_details["foot"] = spend_amount
+		if claw_salvage > 0 and cost_remaining > 0: var spend_amount = min(claw_salvage, cost_remaining); claw_salvage -= spend_amount; cost_remaining -= spend_amount; spent_details["claw"] = spend_amount
+		if core_salvage > 0 and cost_remaining > 0: var spend_amount = min(core_salvage, cost_remaining); core_salvage -= spend_amount; cost_remaining -= spend_amount; spent_details["core"] = spend_amount
+		if cost_remaining > 0: printerr("CRITICAL ERROR: Failed to cover cost %d!" % cost_needed); print("Upgrade failed (Internal Cost Error)."); return
+		print("Upgrade applied! Spent %d F / %d C / %d Co = %d Total for %s point." % [spent_details.foot, spent_details.claw, spent_details.core, cost_needed, upgrade_type])
 		player.add_upgrade_point(upgrade_type)
 		emit_signal("salvage_updated", foot_salvage, claw_salvage, core_salvage); emit_signal("rust_coin_updated", rust_coin)
 		if is_instance_valid(upgrade_screen_instance) and upgrade_screen_instance.has_method("update_display"):
 			var updated_player_stats = player.get_stats_for_ui()
 			upgrade_screen_instance.update_display(foot_salvage, claw_salvage, core_salvage, rust_coin, updated_player_stats)
-	else: print("Not enough total salvage for '%s' upgrade (Need %d, Have %d)." % [upgrade_type, cost_needed, total_salvage]); print("Upgrade failed (Insufficient Salvage).")
+	else: print("Not enough total salvage to add '%s' point (Need %d, Have %d)." % [upgrade_type, cost_needed, current_total_salvage]); print("Upgrade failed (Insufficient Salvage).")
 
 
 func _on_player_died():
@@ -183,9 +200,8 @@ func _return_to_main_menu():
 	if error_code != OK: printerr("Error changing scene to main menu: ", error_code)
 
 
-# --- Corrected collect_salvage ---
+# --- Corrected collect_salvage with proper match ---
 func collect_salvage(_type: String):
-	# Use proper match structure
 	match _type.to_lower():
 		"foot":
 			foot_salvage += 1
@@ -197,11 +213,11 @@ func collect_salvage(_type: String):
 			printerr("Game Error: Collected unknown salvage type: ", _type)
 			return # Exit if type is unknown
 
-	_update_total_salvage()
+	# Don't need _update_total_salvage here, calculated on demand
 	emit_signal("salvage_updated", foot_salvage, claw_salvage, core_salvage)
 
 
-# --- Corrected scrap_salvage ---
+# --- Corrected scrap_salvage with proper match ---
 func scrap_salvage(type: String):
 	var scrap_type = type.to_lower()
 	var salvaged_amount = 0
@@ -226,11 +242,10 @@ func scrap_salvage(type: String):
 		var coins_gained = salvaged_amount * salvage_to_rustcoin_rate
 		rust_coin += coins_gained
 		print("Scrapped 1 %s for %d RustCoin. Total RC: %d" % [scrap_type, coins_gained, rust_coin])
-		_update_total_salvage()
+		# Don't need _update_total_salvage here
 		emit_signal("salvage_updated", foot_salvage, claw_salvage, core_salvage); emit_signal("rust_coin_updated", rust_coin)
 		if is_instance_valid(upgrade_screen_instance) and upgrade_screen_instance.visible and upgrade_screen_instance.has_method("update_display"):
-			var current_player_stats = {} # Default empty dict
-			if player and player.has_method("get_stats_for_ui"): current_player_stats = player.get_stats_for_ui()
+			var current_player_stats = {}; if player and player.has_method("get_stats_for_ui"): current_player_stats = player.get_stats_for_ui()
 			upgrade_screen_instance.update_display(foot_salvage, claw_salvage, core_salvage, rust_coin, current_player_stats)
 	else:
 		# Only print if the type was known but count was zero
