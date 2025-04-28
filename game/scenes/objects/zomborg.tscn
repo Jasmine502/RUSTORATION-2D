@@ -47,7 +47,7 @@ wait_time = 3.0
 autostart = true
 
 [node name="SoundPlayer" type="AudioStreamPlayer2D" parent="."]
-volume_db = 0.5
+volume_db = 1.0
 
 [node name="SplatSoundPlayer" type="AudioStreamPlayer2D" parent="."]
-volume_db = 0.5
+volume_db = 1.0

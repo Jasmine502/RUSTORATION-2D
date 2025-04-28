@@ -24,7 +24,7 @@ bg_color = Color(0.188235, 0.823529, 1, 1)
 bg_color = Color(0.0156863, 0.156863, 0.00392157, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygxdb"]
-bg_color = Color(0.0156863, 0.156863, 0.00392157, 1)
+bg_color = Color(0.211765, 1, 0.12549, 1)
 
 [node name="UpgradeScreen" type="CanvasLayer"]
 script = ExtResource("1_xpnye")

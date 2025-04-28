@@ -134,7 +134,7 @@ func _on_enemy_died(enemy_instance):
 func wave_cleared():
 	print("--- Wave ", current_wave, " Cleared! ---"); wave_in_progress = false;
 	var children_left = enemies_container.get_child_count()
-	if children_left > 0: printerr("CRITICAL WARN: wave_cleared called but %d enemies still in container!" % children_left)
+	if children_left > 0: print("CRITICAL WARN: wave_cleared called but %d enemies still in container!" % children_left)
 	call_deferred("show_upgrade_screen")
 
 
