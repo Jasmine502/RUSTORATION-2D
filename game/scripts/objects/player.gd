@@ -6,23 +6,29 @@ signal health_updated(new_health)
 signal player_died
 
 # --- EXPORTS ---
-@export var move_speed: float = 300.0
-@export var acceleration: float = 1500.0 # How quickly the player speeds up (pixels/sec^2)
-@export var friction: float = 1200.0     # How quickly the player slows down (pixels/sec^2)
+@export var base_move_speed: float = 300.0 # Renamed for clarity
+@export var acceleration: float = 1500.0
+@export var friction: float = 1200.0
 @export var shoot_cooldown: float = 0.2
 @export var bullet_scene: PackedScene
-@export var max_health: int = 100
+@export var base_max_health: int = 100 # Renamed for clarity
 @export var damage_cooldown_time: float = 0.5
 @export var hurt_sound: AudioStream
 @export var shoot_sound: AudioStream
 @export var normal_texture: Texture2D
 @export var shooting_texture: Texture2D
 @export var hurt_texture: Texture2D
+@export var speed_increase_per_upgrade: float = 50.0
+@export var damage_increase_per_upgrade: int = 1 # Bullets deal 1 extra damage
+@export var health_increase_per_upgrade: int = 20
 
 # --- INTERNAL VARIABLES ---
 var can_shoot: bool = true
 var current_health: int
 var can_take_damage: bool = true
+var current_move_speed: float
+var current_max_health: int
+var current_bullet_damage: int = 1 # Starting bullet damage
 
 # --- NODES ---
 @onready var sprite: Sprite2D = $PlayerSprite
@@ -34,13 +40,14 @@ var can_take_damage: bool = true
 @onready var shoot_sprite_timer = $ShootSpriteTimer
 
 func _ready():
-	current_health = max_health
+	current_move_speed = base_move_speed
+	current_max_health = base_max_health
+	current_health = current_max_health
+	current_bullet_damage = 1
 	emit_signal("health_updated", current_health)
 
-	if sprite and normal_texture:
-		sprite.texture = normal_texture
-	elif sprite:
-		printerr("WARN: Player Normal Texture not assigned in Inspector!")
+	if sprite and normal_texture: sprite.texture = normal_texture
+	elif sprite: printerr("WARN: Player Normal Texture not assigned!")
 
 	# --- Null Checks and Setup ---
 	if shoot_timer == null: printerr("ERROR: ShootTimer node not found!")
@@ -79,13 +86,10 @@ func _physics_process(delta):
 		if is_physics_processing(): set_physics_process(false)
 		return
 
-	# --- Aiming ---
 	look_at(get_global_mouse_position())
 
-	# --- Smooth Movement ---
 	var input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var target_velocity = input_direction * move_speed
-	# Removed unused 'current_acceleration' variable here
+	var target_velocity = input_direction * current_move_speed
 	if input_direction != Vector2.ZERO:
 		velocity = velocity.move_toward(target_velocity, acceleration * delta)
 	else:
@@ -93,7 +97,6 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-	# --- Shooting ---
 	if shoot_timer != null and Input.is_action_pressed("shoot") and can_shoot:
 		if shoot_sound_player != null and shoot_sound_player.stream != null:
 			shoot_sound_player.pitch_scale = randf_range(0.9, 1.1)
@@ -108,11 +111,23 @@ func _physics_process(delta):
 		can_shoot = false
 		shoot_timer.start()
 
+# --- Corrected _shoot function ---
 func _shoot():
 	if muzzle == null: printerr("ERROR: Muzzle node null in _shoot!"); return
 	if not bullet_scene: printerr("Bullet scene not set!"); return
 
 	var bullet_instance = bullet_scene.instantiate()
+
+	# --- Set Bullet Damage ---
+	# Directly set the damage variable, assuming bullet.gd defines it.
+	# Removed the incorrect 'has("damage")' check.
+	# Optional: Check script type first for more safety
+	# if bullet_instance.get_script() == preload("res://scripts/objects/bullet.gd"):
+	bullet_instance.damage = current_bullet_damage
+	# else:
+	#     printerr("WARN: Instantiated bullet scene does not have bullet.gd script!")
+
+	# --- Initialize Bullet ---
 	if bullet_instance.has_method("start"):
 		bullet_instance.start(muzzle.global_position, transform.x)
 	else:
@@ -121,7 +136,7 @@ func _shoot():
 
 	if get_parent() == null: printerr("ERROR: Player has no parent!"); return
 	get_parent().call_deferred("add_child", bullet_instance)
-
+# --- End of corrected _shoot function ---
 
 func _on_shoot_timer_timeout():
 	can_shoot = true
@@ -166,8 +181,22 @@ func die():
 
 	var collision_shape = $CollisionShape2D
 	if collision_shape:
-		# Use set_deferred for physics properties changed outside _physics_process
 		collision_shape.set_deferred("disabled", true)
 
 func get_current_health() -> int:
 	return current_health
+
+func upgrade_speed():
+	current_move_speed += speed_increase_per_upgrade
+	print("Player Speed upgraded to: ", current_move_speed)
+
+func upgrade_damage():
+	current_bullet_damage += damage_increase_per_upgrade
+	print("Player Bullet Damage upgraded to: ", current_bullet_damage)
+
+func upgrade_health():
+	current_max_health += health_increase_per_upgrade
+	current_health += health_increase_per_upgrade
+	current_health = min(current_health, current_max_health)
+	print("Player Max Health upgraded to: ", current_max_health)
+	emit_signal("health_updated", current_health)

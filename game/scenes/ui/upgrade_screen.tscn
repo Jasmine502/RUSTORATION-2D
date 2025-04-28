@@ -1,9 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://eym67yphv6n5"]
+[gd_scene load_steps=3 format=3 uid="uid://eym67yphv6n5"]
 
-[ext_resource type="Texture2D" uid="uid://bcmbvxht7a7an" path="res://assets/images/foot.png" id="1_bd1lb"]
 [ext_resource type="Script" uid="uid://b54k1j87ovjc0" path="res://scripts/ui/upgrade_screen.gd" id="1_xpnye"]
-[ext_resource type="Texture2D" uid="uid://bxsg5twm8rcft" path="res://assets/images/claw.png" id="2_xpnye"]
-[ext_resource type="Texture2D" uid="uid://cpvdalg6jokek" path="res://assets/images/core.png" id="3_k541j"]
+[ext_resource type="Texture2D" uid="uid://j0dvpav61r68" path="res://assets/images/Salvage.png" id="2_eg2gl"]
 
 [node name="UpgradeScreen" type="CanvasLayer"]
 script = ExtResource("1_xpnye")
@@ -34,75 +32,41 @@ grow_vertical = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="UpgradePanel/MainLayout"]
+[node name="SalvageIcon" type="TextureRect" parent="UpgradePanel/MainLayout"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-
-[node name="SalvageDisplay" type="HBoxContainer" parent="UpgradePanel/MainLayout"]
-layout_mode = 2
-theme_override_constants/separation = 30
-alignment = 1
-
-[node name="FootIcon" type="TextureRect" parent="UpgradePanel/MainLayout/SalvageDisplay"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("1_bd1lb")
+texture = ExtResource("2_eg2gl")
 stretch_mode = 5
 
-[node name="FootCountLabel" type="Label" parent="UpgradePanel/MainLayout/SalvageDisplay"]
+[node name="TotalSalvageLabel" type="Label" parent="UpgradePanel/MainLayout"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "x 0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ClawIcon" type="TextureRect" parent="UpgradePanel/MainLayout/SalvageDisplay"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("2_xpnye")
-stretch_mode = 5
-
-[node name="ClawCountLabel" type="Label" parent="UpgradePanel/MainLayout/SalvageDisplay"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "x 0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CoreIcon" type="TextureRect" parent="UpgradePanel/MainLayout/SalvageDisplay"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("3_k541j")
-stretch_mode = 5
-
-[node name="CoreCountLabel" type="Label" parent="UpgradePanel/MainLayout/SalvageDisplay"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "x 0"
+theme_override_font_sizes/font_size = 50
+text = "x0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonLayout" type="HBoxContainer" parent="UpgradePanel/MainLayout"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 40
 alignment = 1
 
 [node name="SpeedButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
 layout_mode = 2
 tooltip_text = "Increases movement speed."
 theme_override_font_sizes/font_size = 30
-text = "Upgrade Speed (5 Feet)"
+text = "Upgrade Speed"
 
 [node name="DamageButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
 layout_mode = 2
 tooltip_text = "Increases bullet damage"
 theme_override_font_sizes/font_size = 30
-text = "Upgrade Damage (5 Claws)"
+text = "Upgrade Damage"
 
 [node name="HealthButton" type="Button" parent="UpgradePanel/MainLayout/ButtonLayout"]
 layout_mode = 2
 tooltip_text = "Increases maximum health."
 theme_override_font_sizes/font_size = 30
-text = "Upgrade Health (5 Cores)"
+text = "Upgrade Core"
 
 [node name="NextWaveButton" type="Button" parent="UpgradePanel/MainLayout"]
 layout_mode = 2
