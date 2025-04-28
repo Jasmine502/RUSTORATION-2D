@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://2x7m7l0670r4"]
+[gd_scene load_steps=6 format=3 uid="uid://2x7m7l0670r4"]
 
 [ext_resource type="Texture2D" uid="uid://j4quab838lbi" path="res://assets/images/RUSTORATION title.png" id="1_1g8jr"]
 [ext_resource type="Script" uid="uid://ecmkbettappy" path="res://scripts/ui/main_menu.gd" id="1_m1kxf"]
 [ext_resource type="Texture2D" uid="uid://bohl3t2cogpdf" path="res://assets/images/play.png" id="2_m1kxf"]
 [ext_resource type="Texture2D" uid="uid://c5itq6tma1p3t" path="res://assets/images/how to play.png" id="3_x2yvf"]
+[ext_resource type="Texture2D" uid="uid://bjq0ely2i86hl" path="res://assets/images/vignette.png" id="5_x2yvf"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -20,6 +21,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.133333, 0.392157, 0.160784, 1)
+
+[node name="Vignette" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_x2yvf")
+stretch_mode = 3
 
 [node name="TitleImage" type="TextureRect" parent="."]
 layout_mode = 1

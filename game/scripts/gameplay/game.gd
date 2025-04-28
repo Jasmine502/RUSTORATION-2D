@@ -17,7 +17,7 @@ extends Node2D
 # --- INTERNAL ---
 var spawn_radius: float = 600.0
 var game_over_flag: bool = false
-var game_over_delay: float = 5.0
+var game_over_delay: float = 10.0
 
 # --- NEW: Salvage Counts ---
 var foot_salvage: int = 0
