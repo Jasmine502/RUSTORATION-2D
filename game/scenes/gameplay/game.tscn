@@ -19,10 +19,10 @@ z_index = -10
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1200.0
-offset_top = -800.0
-offset_right = 1200.0
-offset_bottom = 800.0
+offset_left = -3090.0
+offset_top = -2060.0
+offset_right = 3090.0
+offset_bottom = 2060.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.133333, 0.392157, 0.160784, 1)
@@ -37,7 +37,7 @@ wait_time = 2.0
 autostart = true
 
 [node name="GameOverSoundPlayer" type="AudioStreamPlayer" parent="."]
-volume_db = -1.0
+volume_db = -2.0
 
 [node name="HUD" parent="." instance=ExtResource("5_nvygq")]
 

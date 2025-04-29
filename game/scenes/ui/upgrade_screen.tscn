@@ -242,6 +242,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "CORE"
 
+[node name="CurrentCoreLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "(X/100)"
+
 [node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -293,6 +298,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "DAMAGE"
 
+[node name="CurrentDamageLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "(+1)"
+
 [node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -343,6 +353,11 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "SERVOS"
+
+[node name="CurrentSpeedLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "(300 m/s)"
 
 [node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer5/HBoxContainer"]
 layout_mode = 2
