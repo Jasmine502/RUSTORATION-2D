@@ -301,7 +301,7 @@ text = "DAMAGE"
 [node name="CurrentDamageLabel" type="Label" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "(+1)"
+text = "(10000 N)"
 
 [node name="Control" type="Control" parent="MainMargins/MainVerticalLayout/MainSplit/RightPanel/RightLayout/StatsBox/HBoxContainer4/HBoxContainer"]
 layout_mode = 2
