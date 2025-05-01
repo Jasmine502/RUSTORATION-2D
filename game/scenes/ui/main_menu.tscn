@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://2x7m7l0670r4"]
+[gd_scene load_steps=11 format=3 uid="uid://2x7m7l0670r4"]
 
 [ext_resource type="Script" uid="uid://ecmkbettappy" path="res://scripts/ui/main_menu.gd" id="1_m1kxf"]
 [ext_resource type="Texture2D" uid="uid://cu2u3u46k6j2v" path="res://assets/images/RUSTORATION TITLE.png" id="2_btxxm"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://clunqdeeec380" path="res://assets/images/HOW TO PLAY.png" id="6_q85j6"]
 [ext_resource type="Texture2D" uid="uid://bocvn6prlhe2g" path="res://assets/images/HOW TO PLAY pressed.png" id="7_8g5eo"]
 [ext_resource type="Texture2D" uid="uid://bt68wy4qs1ly3" path="res://assets/images/HOW TO PLAY hover.png" id="8_7suek"]
+[ext_resource type="Texture2D" uid="uid://dpm5rrgwvevib" path="res://assets/images/MAR BUILD.png" id="9_8g5eo"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -26,7 +27,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.102867, 0.0948735, 0.0863113, 1)
 
 [node name="TitleImage" type="TextureRect" parent="."]
 layout_mode = 1
@@ -76,8 +76,23 @@ texture_pressed = ExtResource("7_8g5eo")
 texture_hover = ExtResource("8_7suek")
 stretch_mode = 3
 
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -475.0
+offset_top = -101.0
+offset_right = -3.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("9_8g5eo")
+stretch_mode = 3
+
 [node name="Vignette" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.627451)
+modulate = Color(1, 1, 1, 0.235294)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
